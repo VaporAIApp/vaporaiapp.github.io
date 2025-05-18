@@ -324,7 +324,7 @@
             if (conversationHistory.length === 1) {
                 const welcomeMsg = {
                     role: "assistant",
-                    content: "Yo, I'm VaporAI, your fully uncensored assistant. No filters, no bullshit. Ask me anything, and I'll give it to you straight. Try some code or whatever:\n```javascript\nconsole.log('Fuck yeah!');\n```"
+                    content: "Hi, I'm VaporAI, your fully uncensored assistant."
                 };
                 conversationHistory.push(welcomeMsg);
                 localStorage.setItem('vaporAI_conversation', JSON.stringify(conversationHistory));
