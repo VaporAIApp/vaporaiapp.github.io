@@ -276,7 +276,7 @@
         const sendButton = document.getElementById('sendButton');
         const deleteBtn = document.getElementById('deleteBtn');
         const chatMessages = document.getElementById('chatMessages');
-        const API_KEY = "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";
+        const API_KEY = "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";
         const botIconUrl = "https://raw.githubusercontent.com/VaporAIApp/vaporaiapp.github.io/refs/heads/main/1747596558593.jpg"; // Set your image URL here, e.g., "https://example.com/bot-icon.png"
         const temperature = 0.2; // Controls randomness (0.0 to 2.0, default 0.7)
         const top_p = 0.9; // Controls diversity via nucleus sampling (0.0 to 1.0, default 0.9)
@@ -480,7 +480,7 @@
                     // Add error to conversation history
                     conversationHistory.push({
                         role: "assistant",
-                        content: "Shit, something broke. Try again."
+                        content: "Oops, something broke. Try again."
                     });
                     localStorage.setItem('vaporAI_conversation', JSON.stringify(conversationHistory));
                 }
