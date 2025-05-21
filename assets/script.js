@@ -1,6 +1,3 @@
-// Import the Google Generative AI SDK
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-
 // Configure marked.js to use highlight.js for code blocks
 marked.setOptions({
     highlight: function(code, lang) {
@@ -16,14 +13,10 @@ const inputField = document.getElementById('messageInput');
 const sendButton = document.getElementById('sendButton');
 const deleteBtn = document.getElementById('deleteBtn');
 const chatMessages = document.getElementById('chatMessages');
-const API_KEY = "YOUR_GEMINI_API_KEY_HERE"; // Replace with your Gemini API key
+const API_KEY = "AIzaSyANG17NaZBBPPC4LINJDwSv3SdfAs9hMZA"; // Replace with your Gemini API key
 const botIconUrl = ""; // Set your image URL here, e.g., "https://example.com/bot-icon.png"
 const temperature = 0.2; // Controls randomness (0.0 to 2.0, default 0.7)
 const top_p = 0.9; // Controls diversity via nucleus sampling (0.0 to 1.0, default 0.9)
-
-// Initialize the Gemini API client
-const genAI = new GoogleGenerativeAI(API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 // System instructions for the AI
 const systemInstructions = {
@@ -157,16 +150,34 @@ async function sendMessage() {
         chatMessages.scrollTop = chatMessages.scrollHeight;
         
         try {
-            // Call Gemini API with temperature and top_p
-            const result = await model.generateContent({
-                contents: conversationHistory,
-                generationConfig: {
-                    temperature: temperature,
-                    topP: top_p
-                }
+            // Map conversation history to Gemini's expected format
+            const geminiMessages = conversationHistory.map(msg => ({
+                role: msg.role === "assistant" ? "model" : msg.role,
+                parts: [{ text: msg.content }]
+            }));
+
+            // Call Gemini API with fetch
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: geminiMessages,
+                    generationConfig: {
+                        temperature: temperature,
+                        topP: top_p
+                    }
+                })
             });
-            const response = await result.response;
-            const botResponse = marked.parse(response.text());
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            const botResponseText = data.candidates[0].content.parts[0].text;
+            const botResponse = marked.parse(botResponseText);
             
             // Remove typing indicator
             typingIndicator.remove();
@@ -185,7 +196,7 @@ async function sendMessage() {
             // Add bot response to conversation history with 'assistant' role
             conversationHistory.push({
                 role: "assistant",
-                content: response.text()
+                content: botResponseText
             });
             
             // Save to localStorage
