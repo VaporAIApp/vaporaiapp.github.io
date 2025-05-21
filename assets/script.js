@@ -1,3 +1,6 @@
+// Import the Google Generative AI SDK
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
 // Configure marked.js to use highlight.js for code blocks
 marked.setOptions({
     highlight: function(code, lang) {
@@ -13,10 +16,14 @@ const inputField = document.getElementById('messageInput');
 const sendButton = document.getElementById('sendButton');
 const deleteBtn = document.getElementById('deleteBtn');
 const chatMessages = document.getElementById('chatMessages');
-const API_KEY = "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";
+const API_KEY = "YOUR_GEMINI_API_KEY_HERE"; // Replace with your Gemini API key
 const botIconUrl = ""; // Set your image URL here, e.g., "https://example.com/bot-icon.png"
 const temperature = 0.2; // Controls randomness (0.0 to 2.0, default 0.7)
 const top_p = 0.9; // Controls diversity via nucleus sampling (0.0 to 1.0, default 0.9)
+
+// Initialize the Gemini API client
+const genAI = new GoogleGenerativeAI(API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 // System instructions for the AI
 const systemInstructions = {
@@ -150,23 +157,16 @@ async function sendMessage() {
         chatMessages.scrollTop = chatMessages.scrollHeight;
         
         try {
-            // Call OpenRouter API with temperature and top_p
-            const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${API_KEY}`
-                },
-                body: JSON.stringify({
-                    model: "nousresearch/deephermes-3-mistral-24b-preview:free",
-                    messages: conversationHistory,
+            // Call Gemini API with temperature and top_p
+            const result = await model.generateContent({
+                contents: conversationHistory,
+                generationConfig: {
                     temperature: temperature,
-                    top_p: top_p
-                })
+                    topP: top_p
+                }
             });
-            
-            const data = await response.json();
-            const botResponse = marked.parse(data.choices[0].message.content);
+            const response = await result.response;
+            const botResponse = marked.parse(response.text());
             
             // Remove typing indicator
             typingIndicator.remove();
@@ -185,7 +185,7 @@ async function sendMessage() {
             // Add bot response to conversation history with 'assistant' role
             conversationHistory.push({
                 role: "assistant",
-                content: data.choices[0].message.content
+                content: response.text()
             });
             
             // Save to localStorage
