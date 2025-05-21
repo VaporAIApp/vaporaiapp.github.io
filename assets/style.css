@@ -1,0 +1,229 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    backdrop-filter: blur(2px);
+    border-radius: 0;
+    box-shadow: none;
+    overflow: hidden;
+}
+
+.chat-header {
+    padding: 12px 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: 18px;
+    color: #333;
+}
+
+.chat-header span {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.delete-btn {
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 16px;
+}
+
+.delete-btn:hover {
+    color: #d32f2f;
+    transform: scale(1.1);
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #ffffff;
+}
+
+.message {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.user-message {
+    justify-content: flex-end;
+}
+
+.bot-message {
+    justify-content: flex-start;
+}
+
+.message-content {
+    max-width: 75%;
+    padding: 10px 16px;
+    border-radius: 18px;
+    line-height: 1.4;
+    font-size: 15px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.user-message .message-content {
+    background-color: #000;
+    color: white;
+    border-top-right-radius: 5px;
+    margin-right: 10px;
+}
+
+.bot-message .message-content {
+    background-color: #f5f4f5;
+    color: #333;
+    border-top-left-radius: 5px;
+    margin-left: 10px;
+}
+
+.bot-message .message-content p {
+    margin: 0;
+}
+
+.bot-message .message-content pre {
+    background: #1e1e1e;
+    border-radius: 8px;
+    padding: 12px;
+    overflow-x: auto;
+    margin: 8px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.bot-message .message-content code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+}
+
+.bot-icon, .user-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #e6e7e6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1px;
+    flex-shrink: 0;
+}
+
+.bot-icon {
+    color: #5e35b1;
+}
+
+.bot-icon img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-icon {
+    color: #666;
+    order: 2;
+}
+
+.chat-input {
+    padding: 12px 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 12px 18px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+    outline: none;
+    font-size: 15px;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.chat-input input::placeholder {
+    color: #999;
+}
+
+.send-button {
+    margin-left: 12px;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.send-button:hover {
+    background-color: #333;
+    transform: scale(1.05);
+}
+
+.send-button i {
+    font-size: 18px;
+}
+
+.chat-messages::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.typing-dot {
+    display: inline-block;
+    font-size: 20px;
+    line-height: 20px;
+    margin: 0 2px;
+    animation: bounce 0.6s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
