@@ -221,7 +221,7 @@ async function sendMessage() {
                 <div class="bot-icon">
                     ${botIconUrl ? `<img src="${botIconUrl}" alt="Bot Icon">` : `<i class="fas fa-brain"></i>`}
                 </div>
-                <div class="message-content">Shit, something broke. Try again.</div>
+                <div class="message-content">Sorry, something broke. Try again.</div>
             `;
             chatMessages.appendChild(errorMessage);
             
